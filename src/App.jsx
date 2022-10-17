@@ -1,5 +1,6 @@
-import React from "react";
+import React, {useState} from "react";
 import {AiOutlinePlus} from "react-icons/ai"
+import Todo from "./components/Todo";
 
 
 const style = {
@@ -8,6 +9,9 @@ const style = {
 
 
 function App() {
+
+  const [todos, setTodos] = useState(["Learn React", "Grind Leetcode"]);
+
   return (
     <div className={style.bg}>
        <div className={style.container}>
@@ -18,6 +22,12 @@ function App() {
           <input className={style.input} type="text" placeholder="Add Todo" />
           <button className={style.button}><AiOutlinePlus size={30} /></button>
         </form>
+        <ul>
+            {todos.map((todo, idx)=>(
+              <Todo key={idx} todo={todo} />
+            ))}
+        </ul>
+        <p className={style.count}>You have 2 todos</p>
        </div>
     </div>
   );
