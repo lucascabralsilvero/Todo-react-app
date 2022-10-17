@@ -3,7 +3,7 @@ import { AiOutlinePlus } from "react-icons/ai"
 import Todo from "./components/Todo";
 import { db } from "./firebase";
 import { collection, onSnapshot, query, updateDoc,doc, addDoc, deleteDoc } from "firebase/firestore"
-
+import Swal from "sweetalert2";
 
 const style = {
   bg:`h-screen w-screen p-4 bg-gradient-to-r from-[#2f80ed] to-[#1cb5e0]`,
@@ -27,7 +27,11 @@ function App() {
   const createTodo = async (e) =>{
     e.preventDefault(e);
     if(input === ""){
-      alert("Please enter a valid todo")
+      Swal.fire({
+        icon: "error",
+        title: "Something went wrong!",
+        text: "Please enter a valid todo"
+      })
       return;
     }
     await addDoc(collection(db, "todos"),{
