@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { AiOutlinePlus } from "react-icons/ai"
 import Todo from "./components/Todo";
 import { db } from "./firebase";
-import { collection, onSnapshot, query, updateDoc,doc, addDoc } from "firebase/firestore"
+import { collection, onSnapshot, query, updateDoc,doc, addDoc, deleteDoc } from "firebase/firestore"
 
 
 const style = {
@@ -30,7 +30,7 @@ function App() {
       alert("Please enter a valid todo")
       return;
     }
-    await addDoc(collection,(db, "todos"),{
+    await addDoc(collection(db, "todos"),{
       text: input,
       completed: false
     })
@@ -61,6 +61,10 @@ function App() {
 
   // Delete Todo 
 
+  const deleteTodo = async (id) => {
+    await deleteDoc(doc(db, "todos", id))
+  }
+
   return (
     <div className={style.bg}>
        <div className={style.container}>
@@ -73,7 +77,7 @@ function App() {
         </form>
         <ul>
             {todos.map((todo, idx)=>(
-              <Todo key={idx} todo={todo} toggleComplete={toggleComplete}/>
+              <Todo key={idx} todo={todo} toggleComplete={toggleComplete} deleteTodo={deleteTodo}/>
             ))}
         </ul>
 
