@@ -1,6 +1,8 @@
-import React, {useState} from "react";
-import {AiOutlinePlus} from "react-icons/ai"
+import React, { useState, useEffect } from "react";
+import { AiOutlinePlus } from "react-icons/ai"
 import Todo from "./components/Todo";
+import { db } from "./firebase";
+import { collection, onSnapshot, query, updateDoc,doc } from "firebase/firestore"
 
 
 const style = {
@@ -16,7 +18,32 @@ const style = {
 
 function App() {
 
-  const [todos, setTodos] = useState(["Learn React", "Grind Leetcode"]);
+  const [todos, setTodos] = useState([]);
+
+  // Create Todo 
+  // Read Todo from firebase 
+
+  useEffect(() => {
+    const q = query(collection(db, "todos"))
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let todosArr = [];
+      querySnapshot.forEach((doc) => {
+        todosArr.push({...doc.data(), id: doc.id})
+      })
+      setTodos(todosArr)
+    })
+    return () => unsubscribe()
+  }, []);
+
+  // Update Todo from firebase 
+
+  const toggleComplete = async (todo) => {
+      await updateDoc(doc(db, "todos",todo.id), {
+        completed: !todo.completed
+      })
+  }
+
+  // Delete Todo 
 
   return (
     <div className={style.bg}>
@@ -30,7 +57,7 @@ function App() {
         </form>
         <ul>
             {todos.map((todo, idx)=>(
-              <Todo key={idx} todo={todo} />
+              <Todo key={idx} todo={todo} toggleComplete={toggleComplete}/>
             ))}
         </ul>
         <p className={style.count}>You have 2 todos</p>
