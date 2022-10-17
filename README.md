@@ -29,4 +29,4 @@ Sino copiar esta URL y pegarla en el navegador: http://localhost:3000
 
 ## Deploy
 
-*Mira el sitio en vivo aquí :* [ https://to-do-with-react-app.netlify.app/ "Nombre")
+*Mira el sitio en vivo aquí :* [ https://to-do-with-react-app.netlify.app/ "todo-app"]
